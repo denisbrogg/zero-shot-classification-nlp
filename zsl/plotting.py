@@ -1,13 +1,21 @@
-from typing import List
+from typing import List, Literal
 from sklearn.decomposition import PCA
+from umap import UMAP
 import matplotlib.pyplot as plt
 from numpy.typing import NDArray
 
+from zsl.components import Embedder, compute_embeddings
 
-def fit_transform_pca(embeddings: NDArray, n_components: int = 2) -> NDArray:
-    pca = PCA(n_components=n_components)
-    embeddings_2d = pca.fit_transform(embeddings)
-    return embeddings_2d
+
+def fit_transform_projector(
+    embeddings: NDArray,
+    n_components: int = 2,
+    projection: Literal["PCA", "UMAP"] = "UMAP",
+) -> NDArray:
+    projection_dict = {"PCA": PCA, "UMAP": UMAP}
+    projector = projection_dict[projection](n_components=n_components)
+    projections = projector.fit_transform(embeddings)
+    return projections
 
 
 #
@@ -76,7 +84,7 @@ def visualize_embeddings_3d(
     x_pca_annotations,
     labels_pca,
     labels_pca_annotations,
-    title="3D PCA Visualization of Embeddings",
+    title,
 ):
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection="3d")
@@ -89,3 +97,46 @@ def visualize_embeddings_3d(
     ax.set_ylabel("PC2")
     ax.set_zlabel("PC3")
     plt.show()
+
+
+def visualize_embeddings(
+    X,
+    labels,
+    model: Embedder,
+    projection: Literal["PCA", "UMAP"] = "UMAP",
+    dimensions: int = 2,
+):
+    if projection == "PCA":
+        X_embeddings_projections = fit_transform_projector(
+            compute_embeddings(X, model), n_components=dimensions, projection=projection
+        )
+        label_projections = fit_transform_projector(
+            compute_embeddings(labels, model),
+            n_components=dimensions,
+            projection=projection,
+        )
+    elif projection == "UMAP":
+        projections = fit_transform_projector(
+            compute_embeddings(X + labels, model),
+            n_components=dimensions,
+            projection=projection,
+        )
+        X_embeddings_projections = projections[: len(X)]
+        label_projections = projections[len(X) :]
+
+    if dimensions == 2:
+        visualize_embeddings_2d(
+            x_pca=X_embeddings_projections,
+            x_pca_annotations=[" ".join(x.split(" ")[:2]) for x in X],
+            labels_pca=label_projections,
+            labels_pca_annotations=labels,
+            title=f"{dimensions}D {projection} Visualization of Embeddings",
+        )
+    elif dimensions == 3:
+        visualize_embeddings_3d(
+            x_pca=X_embeddings_projections,
+            x_pca_annotations=[" ".join(x.split(" ")[:2]) for x in X],
+            labels_pca=label_projections,
+            labels_pca_annotations=labels,
+            title=f"{dimensions}D {projection} Visualization of Embeddings",
+        )
