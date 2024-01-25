@@ -19,23 +19,27 @@ X = [
 
 labels_example_1 = ["positive", "negative"]
 labels_example_2 = [
-    "politics, finance, government",
-    "sports, football, tennis",
-    "cinema, movies, acting",
+    "politics",
+    "cinema",
+    "sports",
 ]
 
 # %%
-zero_shot_predict(X, labels=labels_example_1, model=model)
+preds = zero_shot_predict(X, labels=labels_example_1, model=model)
+[p["label"] for p in preds]
 
 # %%
-zero_shot_predict(
+preds = zero_shot_predict(
     X,
     labels=labels_example_2,
     model=model,
 )
+[p["label"] for p in preds]
 
 
 # %%
 visualize_embeddings(X, labels_example_2, model, "PCA", 2)
 # %%
 visualize_embeddings(X, labels_example_2, model, "PCA", 3)
+
+# %%

@@ -35,4 +35,7 @@ def zero_shot_predict(X: str | List[str], labels: List[str], model: Embedder) ->
     # Collect results
 
     most_similar_labels = np.argmax(similarities, axis=1)
-    return [dict(label=labels[idx]) for idx in most_similar_labels]
+    return [
+        dict(label=labels[idx], similarities=similarities, labels=labels)
+        for idx in most_similar_labels
+    ]

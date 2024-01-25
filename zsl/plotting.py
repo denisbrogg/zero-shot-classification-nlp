@@ -44,7 +44,8 @@ def visualize_embeddings_2d(
     x_pca_annotations,
     labels_pca,
     labels_pca_annotations,
-    title="2D PCA Visualization of Embeddings",
+    title,
+    return_fig: bool = False,
 ):
     fig, ax = plt.subplots(figsize=(8, 8))
 
@@ -54,6 +55,9 @@ def visualize_embeddings_2d(
     ax.set_title(title)
     ax.set_xticks([])
     ax.set_yticks([])
+
+    if return_fig:
+        return fig
     plt.show()
 
 
@@ -85,6 +89,7 @@ def visualize_embeddings_3d(
     labels_pca,
     labels_pca_annotations,
     title,
+    return_fig: bool = False,
 ):
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection="3d")
@@ -97,6 +102,8 @@ def visualize_embeddings_3d(
     ax.set_yticks([])
     ax.set_zticks([])
 
+    if return_fig:
+        return fig
     plt.show()
 
 
@@ -106,6 +113,7 @@ def visualize_embeddings(
     model: Embedder,
     projection: Literal["PCA", "UMAP"] = "UMAP",
     dimensions: int = 2,
+    return_fig: bool = False,
 ):
     if projection == "PCA":
         X_embeddings_projections = fit_transform_projector(
@@ -126,10 +134,31 @@ def visualize_embeddings(
         label_projections = projections[len(X) :]
 
     viz_fn = visualize_embeddings_2d if dimensions == 2 else visualize_embeddings_3d
-    viz_fn(
+
+    return viz_fn(
         x_pca=X_embeddings_projections,
         x_pca_annotations=[" ".join(x.split(" ")[:2]) for x in X],
         labels_pca=label_projections,
         labels_pca_annotations=labels,
         title=f"{dimensions}D {projection} Visualization of Embeddings",
+        return_fig=return_fig,
     )
+
+
+def plot_histogram(data_dict, ax):
+    labels = data_dict["labels"]
+    similarities = eval(
+        data_dict["similarities"]
+    )  # Convert the string to a NumPy array
+
+    # Flatten the similarities array
+    similarities = similarities.flatten()
+
+    fig, ax = plt.subplots()
+    # Create a histogram
+    ax.bar(labels, similarities, color="blue")
+    ax.xlabel("Labels")
+    ax.ylabel("Similarities")
+    ax.title("Histogram of Similarities")
+
+    plt.show()
