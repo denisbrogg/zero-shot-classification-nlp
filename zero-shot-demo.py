@@ -13,16 +13,15 @@ X = [
     "These elections showed that the pirate party is still strong",
     "Leonardo Di Caprio lost the oscar last night because of his bad luck",
     "That scene was incredibly raw and the interpretation was incredible",
-    "Ravens this year are going to win the super bowl",
-    "Manchester City is a serious candidate to win this champions league",
+    "Baltimore Ravens this year are going to win the super bowl",
+    "Manchester City set to be a serious candidate to win this champions league",
 ]
 
 labels_example_1 = ["positive", "negative"]
 labels_example_2 = [
-    "politics & elections",
-    "sports & competitions",
-    "entertainment & cinema",
-    "finance & market",
+    "politics, finance, government",
+    "sports, football, tennis",
+    "cinema, movies, acting",
 ]
 
 # %%

@@ -52,8 +52,8 @@ def visualize_embeddings_2d(
     scatter_and_annotate_2d(ax, labels_pca, labels_pca_annotations)
 
     ax.set_title(title)
-    ax.set_xlabel("PC1")
-    ax.set_ylabel("PC2")
+    ax.set_xticks([])
+    ax.set_yticks([])
     plt.show()
 
 
@@ -93,9 +93,10 @@ def visualize_embeddings_3d(
     scatter_and_annotate_3d(ax, labels_pca, labels_pca_annotations)
 
     ax.set_title(title)
-    ax.set_xlabel("PC1")
-    ax.set_ylabel("PC2")
-    ax.set_zlabel("PC3")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_zticks([])
+
     plt.show()
 
 
@@ -124,19 +125,11 @@ def visualize_embeddings(
         X_embeddings_projections = projections[: len(X)]
         label_projections = projections[len(X) :]
 
-    if dimensions == 2:
-        visualize_embeddings_2d(
-            x_pca=X_embeddings_projections,
-            x_pca_annotations=[" ".join(x.split(" ")[:2]) for x in X],
-            labels_pca=label_projections,
-            labels_pca_annotations=labels,
-            title=f"{dimensions}D {projection} Visualization of Embeddings",
-        )
-    elif dimensions == 3:
-        visualize_embeddings_3d(
-            x_pca=X_embeddings_projections,
-            x_pca_annotations=[" ".join(x.split(" ")[:2]) for x in X],
-            labels_pca=label_projections,
-            labels_pca_annotations=labels,
-            title=f"{dimensions}D {projection} Visualization of Embeddings",
-        )
+    viz_fn = visualize_embeddings_2d if dimensions == 2 else visualize_embeddings_3d
+    viz_fn(
+        x_pca=X_embeddings_projections,
+        x_pca_annotations=[" ".join(x.split(" ")[:2]) for x in X],
+        labels_pca=label_projections,
+        labels_pca_annotations=labels,
+        title=f"{dimensions}D {projection} Visualization of Embeddings",
+    )
