@@ -2,9 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
-import sys
-
-sys.path.append("..")
 from zsl.components import zero_shot_predict
 
 """
@@ -16,8 +13,8 @@ from zsl.components import zero_shot_predict
 
 #### 1. An embedder 🔢
 """
-st.image("../presentation-material/step-1-embedder.png")
-# st.image("../presentation-material/embedder-carbon.png")
+st.image("presentation-material/step-1-embedder.png")
+# st.image("presentation-material/embedder-carbon.png")
 
 selected_model = st.selectbox(
     label="Embedder",
@@ -33,8 +30,8 @@ with st.spinner("Loading embedder..."):
 """
 #### 2. A Similarity Function 📏
 """
-st.image("../presentation-material/step-2-sim.png")
-# st.image("../presentation-material/sim-call-carbon.png")
+st.image("presentation-material/step-2-sim.png")
+# st.image("presentation-material/sim-call-carbon.png")
 st.selectbox(label="Similarity Function", options=["cosine-similarity"])
 
 """
@@ -54,7 +51,7 @@ if len(labels_as_text):
 """
 #### 4. Put everything togheter 🛠️
 """
-st.image("../presentation-material/step-3-merge.jpeg")
+st.image("presentation-material/step-3-merge.jpeg")
 
 
 """
