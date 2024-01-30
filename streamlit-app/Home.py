@@ -52,6 +52,12 @@ if len(labels_as_text):
     )
 
 """
+#### 4. Put everything togheter 🛠️
+"""
+st.image("../presentation-material/step-3-merge.jpeg")
+
+
+"""
 ---
 ## Good to go! 🎬
 """
@@ -63,9 +69,7 @@ if len(query) and len(labels):
     st.write(f"#### Predicted label: {prediction['label']}")
 
     chart_data = pd.DataFrame(
-        np.eye(len(labels))
-        * prediction["similarities"][0]
-        / sum(prediction["similarities"][0]),
+        np.eye(len(labels)) * prediction["similarities"][0],
         columns=labels,
         index=labels,
     )
